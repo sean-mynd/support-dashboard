@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mynd Mushrooms — Support Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f8f7f4;--card:#ffffff;--text:#1a1a1a;--muted:#6b6b6b;--border:#e8e6e1;--accent:#1D9E75;--blue:#378ADD;--purple:#7F77DD;--pink:#D4537E;--amber:#EF9F27;--green:#1D9E75;--red:#E24B4A}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1a1a;--card:#242424;--text:#e8e6e1;--muted:#9a9a9a;--border:#333;--accent:#5DCAA5}}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);max-width:960px;margin:0 auto;padding:2rem 1.5rem}
+h1{font-size:22px;font-weight:500;margin-bottom:4px}
+.date-range{font-size:14px;color:var(--muted);margin-bottom:1.5rem}
+.updated{font-size:12px;color:var(--muted);margin-bottom:2rem}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:12px}
+.metric{background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem}
+.metric-label{font-size:13px;color:var(--muted);margin-bottom:4px}
+.metric-value{font-size:24px;font-weight:500}
+.metric-value.green{color:var(--accent)}
+.metric-value.amber{color:var(--amber)}
+.metric-value.red{color:var(--red)}
+.section-title{font-size:16px;font-weight:500;margin:2rem 0 8px}
+.chart-container{position:relative;width:100%;height:280px;background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1rem 0.5rem}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend-dot{width:10px;height:10px;border-radius:2px;display:inline-block}
+.summary{background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem;margin-top:2rem;font-size:14px;line-height:1.7;color:var(--muted)}
+.summary strong{color:var(--text);font-weight:500}
+</style>
+</head>
+<body>
+<h1>Mynd Mushrooms — Support dashboard</h1>
+<p class="date-range">Apr 26 – May 1, 2026</p>
+<p class="updated">Last updated: May 3, 2026</p>
+<div class="metrics">
+  <div class="metric"><p class="metric-label">Avg CSAT</p><p class="metric-value green">5.0</p></div>
+  <div class="metric"><p class="metric-label">First response</p><p class="metric-value">10h 13m</p></div>
+  <div class="metric"><p class="metric-label">Resolution time</p><p class="metric-value">14h 9m</p></div>
+  <div class="metric"><p class="metric-label">Msgs / ticket</p><p class="metric-value">2.7</p></div>
+</div>
+<div class="metrics">
+  <div class="metric"><p class="metric-label">Created</p><p class="metric-value">287</p></div>
+  <div class="metric"><p class="metric-label">Closed</p><p class="metric-value">292</p></div>
+  <div class="metric"><p class="metric-label">Open</p><p class="metric-value amber">3</p></div>
+  <div class="metric"><p class="metric-label">Zero touch</p><p class="metric-value">250</p></div>
+</div>
+<p class="section-title">Daily ticket volume</p>
+<div class="legend">
+  <span><span class="legend-dot" style="background:#378ADD"></span>Created</span>
+  <span><span class="legend-dot" style="background:#1D9E75"></span>Closed</span>
+</div>
+<div class="chart-container"><canvas id="volumeChart"></canvas></div>
+<p class="section-title">Tickets by channel</p>
+<div class="legend">
+  <span><span class="legend-dot" style="background:#7F77DD"></span>Instagram comment 170</span>
+  <span><span class="legend-dot" style="background:#378ADD"></span>Facebook 59</span>
+  <span><span class="legend-dot" style="background:#1D9E75"></span>Email 45</span>
+  <span><span class="legend-dot" style="background:#D4537E"></span>Instagram DM 16</span>
+  <span><span class="legend-dot" style="background:#EF9F27"></span>Instagram ad 5</span>
+</div>
+<div class="chart-container"><canvas id="channelChart"></canvas></div>
+<div class="summary">
+  <strong>Weekly summary:</strong> Strong clearance rate — 292 closed against 287 created, shrinking the backlog to just 3 open tickets. April 28 saw a major spike of 161 tickets (56% of the week). Instagram comments drove 58% of volume, with Facebook at 20% and email at 15%. 87% of tickets were resolved without a reply (zero touch). CSAT is a perfect 5.0.
+</div>
+<script>
+const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
+const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+const tickColor = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)';
+new Chart(document.getElementById('volumeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Apr 27','Apr 28','Apr 29','Apr 30','May 1','May 2'],
+    datasets: [
+      {label:'Created',data:[4,161,62,41,16,3],backgroundColor:'#378ADD',borderRadius:4},
+      {label:'Closed',data:[2,125,93,40,28,4],backgroundColor:'#1D9E75',borderRadius:4}
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:tickColor,font:{size:12}}},
+      y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:12}},beginAtZero:true}
+    }
+  }
+});
+new Chart(document.getElementById('channelChart'), {
+  type: 'doughnut',
+  data: {
+    labels:['Instagram comment','Facebook','Email','Instagram DM','Instagram ad'],
+    datasets:[{
+      data:[170,59,45,16,5],
+      backgroundColor:['#7F77DD','#378ADD','#1D9E75','#D4537E','#EF9F27'],
+      borderWidth:2,
+      borderColor: isDark ? '#242424' : '#ffffff'
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false, cutout:'55%',
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:function(ctx){
+        var t=ctx.dataset.data.reduce((a,b)=>a+b,0);
+        return ctx.label+': '+ctx.raw+' ('+Math.round(ctx.raw/t*100)+'%)';
+      }}}
+    }
+  }
+});
+</script>
+</body>
+</html>
