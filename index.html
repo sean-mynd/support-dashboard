@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mynd Mushrooms — Support Dashboard</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230f172a%27/%3E%3Cpath d=%27M16 7C10.5 7 6 10.6 6 15c0 2.4 1.3 4.5 3.4 6L8 25l4.6-2.3c1.1.3 2.2.5 3.4.5 5.5 0 10-3.6 10-8S21.5 7 16 7z%27 fill=%27%2338bdf8%27/%3E%3Ccircle cx=%2711.5%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3Ccircle cx=%2716%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3Ccircle cx=%2720.5%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230f172a%27/%3E%3Cpath d=%27M16 7C10.5 7 6 10.6 6 15c0 2.4 1.3 4.5 3.4 6L8 25l4.6-2.3c1.1.3 2.2.5 3.4.5 5.5 0 10-3.6 10-8S21.5 7 16 7z%27 fill=%27%2338bdf8%27/%3E%3Ccircle cx=%2711.5%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3Ccircle cx=%2716%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3Ccircle cx=%2720.5%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3C/svg%3E">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root {
@@ -35,3 +35,199 @@ h1 {
   background: linear-gradient(135deg, var(--accent), var(--purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 0.9rem; }
+.section { margin-bottom: 32px; }
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.status-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.status-label { font-weight: 700; }
+.status-label.green { color: var(--green); }
+.status-label.yellow { color: var(--yellow); }
+.status-label.red { color: var(--red); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+.metric-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 4px; }
+.metric-value { font-size: 1.5rem; font-weight: 700; }
+.metric-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.highlights {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+.highlight-best { color: var(--green); }
+.highlight-worst { color: var(--red); }
+.summary-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.legend span { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.channel-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.channel-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.channel-name { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.channel-value { font-size: 1.25rem; font-weight: 700; }
+.channel-pct { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Mynd Mushrooms — Support Dashboard</h1>
+<p class="subtitle">Week of Apr 26 – May 1, 2026 &nbsp;|&nbsp; Last updated: May 3, 2026</p>
+
+<div class="status-card">
+  <div class="status-header">🟢 Support Status: <span class="status-label green">Healthy</span></div>
+  <div class="grid-4">
+    <div><div class="metric-label">Avg CSAT</div><div class="metric-value" style="color:var(--green)">5.0</div><div class="metric-sub">Perfect score</div></div>
+    <div><div class="metric-label">First response</div><div class="metric-value">10h 13m</div></div>
+    <div><div class="metric-label">Resolution time</div><div class="metric-value">14h 9m</div></div>
+    <div><div class="metric-label">Msgs / ticket</div><div class="metric-value">2.7</div></div>
+  </div>
+  <div class="highlights">
+    <span>⭐ <span class="highlight-best">Best channel:</span> Email — direct support queries</span>
+    <span>📊 <span style="color:var(--accent)">Busiest day:</span> Apr 28 — 161 tickets (56% of week)</span>
+  </div>
+  <div class="summary-text">
+    Strong clearance rate — 292 closed against 287 created, shrinking the backlog to just 3 open tickets. Instagram comments drove 58% of volume, with Facebook at 20% and email at 15%. 87% of tickets were resolved without a reply (zero touch). CSAT is a perfect 5.0.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">📊 Workload overview</div>
+  <div class="grid-3">
+    <div class="card"><div class="metric-label">Created</div><div class="metric-value">287</div><div class="metric-sub">Total tickets opened</div></div>
+    <div class="card"><div class="metric-label">Closed</div><div class="metric-value">292</div><div class="metric-sub">+5 net resolved</div></div>
+    <div class="card"><div class="metric-label">Open</div><div class="metric-value" style="color:var(--yellow)">3</div><div class="metric-sub">Remaining in queue</div></div>
+  </div>
+  <div class="grid-3">
+    <div class="card"><div class="metric-label">Zero touch</div><div class="metric-value">250</div><div class="metric-sub">87% auto-resolved</div></div>
+    <div class="card"><div class="metric-label">Tickets replied</div><div class="metric-value">37</div><div class="metric-sub">Human-handled</div></div>
+    <div class="card"><div class="metric-label">Messages sent</div><div class="metric-value">42</div><div class="metric-sub">Across all channels</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">📈 Daily ticket volume</div>
+  <div class="legend">
+    <span><span class="legend-dot" style="background:var(--accent)"></span>Created</span>
+    <span><span class="legend-dot" style="background:var(--green)"></span>Closed</span>
+  </div>
+  <div class="card">
+    <div class="chart-container"><canvas id="volumeChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">📬 Tickets by channel</div>
+  <div class="channel-grid">
+    <div class="channel-card"><div class="channel-name">Instagram comment</div><div class="channel-value" style="color:var(--purple)">170</div><div class="channel-pct">58%</div></div>
+    <div class="channel-card"><div class="channel-name">Facebook</div><div class="channel-value" style="color:var(--accent)">59</div><div class="channel-pct">20%</div></div>
+    <div class="channel-card"><div class="channel-name">Email</div><div class="channel-value" style="color:var(--green)">45</div><div class="channel-pct">15%</div></div>
+    <div class="channel-card"><div class="channel-name">Instagram DM</div><div class="channel-value" style="color:#f472b6">16</div><div class="channel-pct">5%</div></div>
+    <div class="channel-card"><div class="channel-name">Instagram ad</div><div class="channel-value" style="color:var(--yellow)">5</div><div class="channel-pct">2%</div></div>
+  </div>
+  <div class="card">
+    <div class="chart-container"><canvas id="channelChart"></canvas></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+new Chart(document.getElementById('volumeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Apr 27','Apr 28','Apr 29','Apr 30','May 1','May 2'],
+    datasets: [
+      {label:'Created',data:[4,161,62,41,16,3],backgroundColor:'#38bdf8',borderRadius:4},
+      {label:'Closed',data:[2,125,93,40,28,4],backgroundColor:'#22c55e',borderRadius:4}
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:12}}},
+      y:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#94a3b8',font:{size:12}},beginAtZero:true}
+    }
+  }
+});
+
+new Chart(document.getElementById('channelChart'), {
+  type: 'doughnut',
+  data: {
+    labels:['Instagram comment','Facebook','Email','Instagram DM','Instagram ad'],
+    datasets:[{
+      data:[170,59,45,16,5],
+      backgroundColor:['#a78bfa','#38bdf8','#22c55e','#f472b6','#eab308'],
+      borderWidth:2,
+      borderColor:'#1e293b'
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false, cutout:'55%',
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:function(ctx){
+        var t=ctx.dataset.data.reduce(function(a,b){return a+b},0);
+        return ctx.label+': '+ctx.raw+' ('+Math.round(ctx.raw/t*100)+'%)';
+      }}}
+    }
+  }
+});
+</script>
+</body>
+</html>
