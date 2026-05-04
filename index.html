@@ -3,231 +3,424 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mynd Mushrooms — Support Dashboard</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230f172a%27/%3E%3Cpath d=%27M16 7C10.5 7 6 10.6 6 15c0 2.4 1.3 4.5 3.4 6L8 25l4.6-2.3c1.1.3 2.2.5 3.4.5 5.5 0 10-3.6 10-8S21.5 7 16 7z%27 fill=%27%2338bdf8%27/%3E%3Ccircle cx=%2711.5%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3Ccircle cx=%2716%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3Ccircle cx=%2720.5%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3C/svg%3E">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<title>Mynd Mushrooms â Support Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='10' y='20' width='80' height='55' rx='18' fill='%234f97eb'/><circle cx='28' cy='75' r='8' fill='%234f97eb'/><circle cx='72' cy='75' r='8' fill='%234f97eb'/><circle cx='28' cy='75' r='4' fill='%230f172a'/><circle cx='72' cy='75' r='4' fill='%230f172a'/></svg>">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
-:root {
-  --bg: #0f172a;
-  --surface: #1e293b;
-  --surface2: #334155;
-  --border: #475569;
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --accent: #38bdf8;
-  --green: #22c55e;
-  --red: #ef4444;
-  --yellow: #eab308;
-  --purple: #a78bfa;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding: 24px;
-  line-height: 1.5;
-}
-.container { max-width: 1400px; margin: 0 auto; }
-h1 {
-  font-size: 1.75rem;
-  margin-bottom: 4px;
-  background: linear-gradient(135deg, var(--accent), var(--purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 0.9rem; }
-.section { margin-bottom: 32px; }
-.section-title {
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 32px;
-}
-.status-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-  font-size: 1.15rem;
-  font-weight: 600;
-}
-.status-label { font-weight: 700; }
-.status-label.green { color: var(--green); }
-.status-label.yellow { color: var(--yellow); }
-.status-label.red { color: var(--red); }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-.metric-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 4px; }
-.metric-value { font-size: 1.5rem; font-weight: 700; }
-.metric-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px 24px;
-}
-.highlights {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 16px;
-  font-size: 0.9rem;
-}
-.highlight-best { color: var(--green); }
-.highlight-worst { color: var(--red); }
-.summary-text {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
-.chart-container {
-  position: relative;
-  width: 100%;
-  height: 300px;
-}
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 12px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-.legend span { display: flex; align-items: center; gap: 6px; }
-.legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-.channel-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.channel-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  text-align: center;
-}
-.channel-name { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-.channel-value { font-size: 1.25rem; font-weight: 700; }
-.channel-pct { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #4f97eb;
+    --green: #34d399;
+    --orange: #d89238;
+    --purple: #a78bfa;
+    --pink: #f472b6;
+    --red: #ef4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.25rem;
+  }
+  .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .status-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .status-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+  }
+  .status-label { color: var(--green); }
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .metric-item label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+  .metric-item .value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .metric-item .sub { font-size: 0.75rem; color: var(--muted); }
+  .highlights {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .summary {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .stat-card .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .stat-card .number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .stat-card .number.green { color: var(--green); }
+  .stat-card .desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .chart-legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .chart-legend span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .chart-legend .dot {
+    width: 10px; height: 10px; border-radius: 3px; display: inline-block;
+  }
+  .grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .channel-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .channel-card .ch-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .channel-card .ch-num {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .channel-card .ch-pct {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .doughnut-container {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  @media (max-width: 768px) {
+    body { padding: 1rem; }
+    .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-5 { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 </head>
 <body>
-<div class="container">
 
-<h1>Mynd Mushrooms — Support Dashboard</h1>
-<p class="subtitle">Week of Apr 26 – May 1, 2026 &nbsp;|&nbsp; Last updated: May 3, 2026</p>
+<h1>Mynd Mushrooms â Support Dashboard</h1>
+<p class="subtitle">Week of Apr 28 â May 4, 2026 &nbsp;|&nbsp; Last updated: May 4, 2026</p>
 
-<div class="status-card">
-  <div class="status-header">🟢 Support Status: <span class="status-label green">Healthy</span></div>
-  <div class="grid-4">
-    <div><div class="metric-label">Avg CSAT</div><div class="metric-value" style="color:var(--green)">5.0</div><div class="metric-sub">Perfect score</div></div>
-    <div><div class="metric-label">First response</div><div class="metric-value">10h 13m</div></div>
-    <div><div class="metric-label">Resolution time</div><div class="metric-value">14h 9m</div></div>
-    <div><div class="metric-label">Msgs / ticket</div><div class="metric-value">2.7</div></div>
+<!-- Status Card -->
+<div class="card">
+  <div class="status-header">
+    <span class="status-dot"></span>
+    <span>Support Status:</span>
+    <span class="status-label">Healthy</span>
+  </div>
+  <div class="metrics-row">
+    <div class="metric-item">
+      <label>Avg CSAT</label>
+      <div class="value">5.0</div>
+      <div class="sub">Perfect score</div>
+    </div>
+    <div class="metric-item">
+      <label>First response</label>
+      <div class="value">8h 43m</div>
+    </div>
+    <div class="metric-item">
+      <label>Resolution time</label>
+      <div class="value">13h 50m</div>
+    </div>
+    <div class="metric-item">
+      <label>Msgs / ticket</label>
+      <div class="value">2.9</div>
+    </div>
   </div>
   <div class="highlights">
-    <span>⭐ <span class="highlight-best">Best channel:</span> Email — direct support queries</span>
-    <span>📊 <span style="color:var(--accent)">Busiest day:</span> Apr 28 — 161 tickets (56% of week)</span>
+    <span>â­ Best channel: Email â direct support queries</span>
+    <span>ð Busiest day: Apr 28 â 161 tickets (40% of week)</span>
   </div>
-  <div class="summary-text">
-    Strong clearance rate — 292 closed against 287 created, shrinking the backlog to just 3 open tickets. Instagram comments drove 58% of volume, with Facebook at 20% and email at 15%. 87% of tickets were resolved without a reply (zero touch). CSAT is a perfect 5.0.
-  </div>
-</div>
-
-<div class="section">
-  <div class="section-title">📊 Workload overview</div>
-  <div class="grid-3">
-    <div class="card"><div class="metric-label">Created</div><div class="metric-value">287</div><div class="metric-sub">Total tickets opened</div></div>
-    <div class="card"><div class="metric-label">Closed</div><div class="metric-value">292</div><div class="metric-sub">+5 net resolved</div></div>
-    <div class="card"><div class="metric-label">Open</div><div class="metric-value" style="color:var(--yellow)">3</div><div class="metric-sub">Remaining in queue</div></div>
-  </div>
-  <div class="grid-3">
-    <div class="card"><div class="metric-label">Zero touch</div><div class="metric-value">250</div><div class="metric-sub">87% auto-resolved</div></div>
-    <div class="card"><div class="metric-label">Tickets replied</div><div class="metric-value">37</div><div class="metric-sub">Human-handled</div></div>
-    <div class="card"><div class="metric-label">Messages sent</div><div class="metric-value">42</div><div class="metric-sub">Across all channels</div></div>
+  <div class="summary">
+    Strong clearance rate â 411 closed against 400 created, shrinking the backlog to just 5 open tickets. Instagram comments drove 58% of volume, with Facebook at 18% and Instagram Ad Comments at 14%. 73% of tickets were resolved without a reply (zero touch). CSAT remains a perfect 5.0. Apr 28 was the busiest day with 161 created tickets; May 4 saw a late-week surge with 74 created and 104 closed.
   </div>
 </div>
 
-<div class="section">
-  <div class="section-title">📈 Daily ticket volume</div>
-  <div class="legend">
-    <span><span class="legend-dot" style="background:var(--accent)"></span>Created</span>
-    <span><span class="legend-dot" style="background:var(--green)"></span>Closed</span>
+<!-- Workload Overview -->
+<div class="section-title">ð Workload overview</div>
+<div class="grid-3">
+  <div class="stat-card">
+    <div class="label">Created</div>
+    <div class="number">400</div>
+    <div class="desc">Total tickets opened</div>
   </div>
-  <div class="card">
-    <div class="chart-container"><canvas id="volumeChart"></canvas></div>
+  <div class="stat-card">
+    <div class="label">Closed</div>
+    <div class="number">411</div>
+    <div class="desc">+11 net resolved</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Open</div>
+    <div class="number green">5</div>
+    <div class="desc">Remaining in queue</div>
+  </div>
+</div>
+<div class="grid-3">
+  <div class="stat-card">
+    <div class="label">Zero touch</div>
+    <div class="number">290</div>
+    <div class="desc">73% auto-resolved</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Tickets replied</div>
+    <div class="number">54</div>
+    <div class="desc">Human-handled</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Messages sent</div>
+    <div class="number">58</div>
+    <div class="desc">Across all channels</div>
   </div>
 </div>
 
-<div class="section">
-  <div class="section-title">📬 Tickets by channel</div>
-  <div class="channel-grid">
-    <div class="channel-card"><div class="channel-name">Instagram comment</div><div class="channel-value" style="color:var(--purple)">170</div><div class="channel-pct">58%</div></div>
-    <div class="channel-card"><div class="channel-name">Facebook</div><div class="channel-value" style="color:var(--accent)">59</div><div class="channel-pct">20%</div></div>
-    <div class="channel-card"><div class="channel-name">Email</div><div class="channel-value" style="color:var(--green)">45</div><div class="channel-pct">15%</div></div>
-    <div class="channel-card"><div class="channel-name">Instagram DM</div><div class="channel-value" style="color:#f472b6">16</div><div class="channel-pct">5%</div></div>
-    <div class="channel-card"><div class="channel-name">Instagram ad</div><div class="channel-value" style="color:var(--yellow)">5</div><div class="channel-pct">2%</div></div>
-  </div>
-  <div class="card">
-    <div class="chart-container"><canvas id="channelChart"></canvas></div>
-  </div>
+<!-- Daily Ticket Volume Chart -->
+<div class="section-title">ð Daily ticket volume</div>
+<div class="chart-legend">
+  <span><span class="dot" style="background:var(--accent)"></span> Created</span>
+  <span><span class="dot" style="background:var(--green)"></span> Closed</span>
+</div>
+<div class="chart-card">
+  <canvas id="dailyChart" height="100"></canvas>
 </div>
 
+<!-- Channel Breakdown -->
+<div class="section-title">ð¬ Tickets by channel</div>
+<div class="grid-5">
+  <div class="channel-card">
+    <div class="ch-label">Instagram comment</div>
+    <div class="ch-num">230</div>
+    <div class="ch-pct">58%</div>
+  </div>
+  <div class="channel-card">
+    <div class="ch-label">Facebook</div>
+    <div class="ch-num">72</div>
+    <div class="ch-pct">18%</div>
+  </div>
+  <div class="channel-card">
+    <div class="ch-label">Instagram ad</div>
+    <div class="ch-num">56</div>
+    <div class="ch-pct">14%</div>
+  </div>
+  <div class="channel-card">
+    <div class="ch-label">Instagram DM</div>
+    <div class="ch-num">32</div>
+    <div class="ch-pct">8%</div>
+  </div>
+  <div class="channel-card">
+    <div class="ch-label">Email</div>
+    <div class="ch-num">10</div>
+    <div class="ch-pct">2%</div>
+  </div>
+</div>
+<div class="chart-card">
+  <div class="doughnut-container">
+    <canvas id="channelChart"></canvas>
+  </div>
 </div>
 
 <script>
-new Chart(document.getElementById('volumeChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Apr 27','Apr 28','Apr 29','Apr 30','May 1','May 2'],
-    datasets: [
-      {label:'Created',data:[4,161,62,41,16,3],backgroundColor:'#38bdf8',borderRadius:4},
-      {label:'Closed',data:[2,125,93,40,28,4],backgroundColor:'#22c55e',borderRadius:4}
-    ]
-  },
-  options: {
-    responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
-    scales:{
-      x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:12}}},
-      y:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#94a3b8',font:{size:12}},beginAtZero:true}
-    }
-  }
-});
+  Chart.defaults.color = '#94a3b8';
+  Chart.defaults.borderColor = '#334155';
 
-new Chart(document.getElementById('channelChart'), {
-  type: 'doughnut',
-  data: {
-    labels:['Instagram comment','Facebook','Email','Instagram DM','Instagram ad'],
-    datasets:[{
-      data:[170,59,45,16,5],
-      backgroundColor:['#a78bfa','#38bdf8','#22c55e','#f472b6','#eab308'],
-      borderWidth:2,
-      borderColor:'#1e293b'
-    }]
-  },
-  options: {
-    responsive:true, maintainAspectRatio:false, cutout:'55%',
-    plugins:{
-      legend:{display:false},
-      tooltip:{callbacks:{label:function(ctx){
-        var t=ctx.dataset.data.reduce(function(a,b){return a+b},0);
-        return ctx.label+': '+ctx.raw+' ('+Math.round(ctx.raw/t*100)+'%)';
-      }}}
+  // Daily ticket volume
+  new Chart(document.getElementById('dailyChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Apr 28', 'Apr 29', 'Apr 30', 'May 1', 'May 2', 'May 3', 'May 4'],
+      datasets: [
+        {
+          label: 'Created',
+          data: [161, 62, 41, 16, 12, 34, 74],
+          backgroundColor: '#4f97eb',
+          borderRadius: 4,
+          barPercentage: 0.7,
+          categoryPercentage: 0.7
+        },
+        {
+          label: 'Closed',
+          data: [125, 93, 40, 26, 11, 12, 104],
+          backgroundColor: '#34d399',
+          borderRadius: 4,
+          barPercentage: 0.7,
+          categoryPercentage: 0.7
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e293b',
+          titleColor: '#e2e8f0',
+          bodyColor: '#94a3b8',
+          borderColor: '#334155',
+          borderWidth: 1,
+          cornerRadius: 8,
+          padding: 12
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: '#1e293b' },
+          ticks: { color: '#94a3b8' }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: '#94a3b8' }
+        }
+      }
     }
-  }
-});
+  });
+
+  // Channel doughnut
+  new Chart(document.getElementById('channelChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Instagram Comment', 'Facebook', 'Instagram Ad', 'Instagram DM', 'Email'],
+      datasets: [{
+        data: [230, 72, 56, 32, 10],
+        backgroundColor: ['#a78bfa', '#34d399', '#f472b6', '#4f97eb', '#d89238'],
+        borderColor: '#1e293b',
+        borderWidth: 3,
+        hoverBorderColor: '#e2e8f0'
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '55%',
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            color: '#94a3b8',
+            padding: 16,
+            usePointStyle: true,
+            pointStyleWidth: 10,
+            font: { size: 12 }
+          }
+        },
+        tooltip: {
+          backgroundColor: '#1e293b',
+          titleColor: '#e2e8f0',
+          bodyColor: '#94a3b8',
+          borderColor: '#334155',
+          borderWidth: 1,
+          cornerRadius: 8,
+          padding: 12,
+          callbacks: {
+            label: function(ctx) {
+              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              const pct = Math.round(ctx.raw / total * 100);
+              return ` ${ctx.label}: ${ctx.raw} (${pct}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
 </script>
+
 </body>
 </html>
