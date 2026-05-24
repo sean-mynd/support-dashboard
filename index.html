@@ -3,236 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mynd Mushrooms — Support Dashboard</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230f172a%27/%3E%3Cpath d=%27M16 7C10.5 7 6 10.6 6 15c0 2.4 1.3 4.5 3.4 6L8 25l4.6-2.3c1.1.3 2.2.5 3.4.5 5.5 0 10-3.6 10-8S21.5 7 16 7z%27 fill=%27%2338bdf8%27/%3E%3Ccircle cx=%2711.5%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3Ccircle cx=%2716%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3Ccircle cx=%2720.5%27 cy=%2715%27 r=%271.5%27 fill=%27%230f172a%27/%3E%3C/svg%3E">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<title>mynd – Support Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2718%27 fill=%27%231E3030%27/%3E%3Cpath d=%27M20 55 Q20 30 40 25 L60 25 Q80 30 80 55 L80 60 Q80 65 75 65 L25 65 Q20 65 20 60Z%27 fill=%27%23B5CFBC%27/%3E%3Ccircle cx=%2735%27 cy=%2745%27 r=%273%27 fill=%27%231E3030%27/%3E%3Ccircle cx=%2765%27 cy=%2745%27 r=%273%27 fill=%27%231E3030%27/%3E%3Crect x=%2730%27 y=%2765%27 width=%275%27 height=%2712%27 rx=%272%27 fill=%27%23B5CFBC%27/%3E%3Crect x=%2748%27 y=%2765%27 width=%275%27 height=%2715%27 rx=%272%27 fill=%27%23B5CFBC%27/%3E%3Crect x=%2765%27 y=%2765%27 width=%275%27 height=%2710%27 rx=%272%27 fill=%27%23B5CFBC%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-:root {
-  --bg: #0f172a;
-  --surface: #1e293b;
-  --surface2: #334155;
-  --border: #475569;
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --accent: #38bdf8;
-  --green: #22c55e;
-  --red: #ef4444;
-  --yellow: #eab308;
-  --purple: #a78bfa;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding: 24px;
-  line-height: 1.5;
-}
-.container { max-width: 1400px; margin: 0 auto; }
-h1 {
-  font-size: 1.75rem;
-  margin-bottom: 4px;
-  background: linear-gradient(135deg, var(--accent), var(--purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 0.9rem; }
-.section { margin-bottom: 32px; }
-.section-title {
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 32px;
-}
-.status-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-  font-size: 1.15rem;
-  font-weight: 600;
-}
-.status-label { font-weight: 700; }
-.status-label.green { color: var(--green); }
-.status-label.yellow { color: var(--yellow); }
-.status-label.red { color: var(--red); }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-.metric-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 4px; }
-.metric-value { font-size: 1.5rem; font-weight: 700; }
-.metric-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px 24px;
-}
-.highlights {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 16px;
-  font-size: 0.9rem;
-  flex-wrap: wrap;
-}
-.highlight-best { color: var(--green); }
-.summary-text {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
-.chart-container {
-  position: relative;
-  width: 100%;
-  height: 300px;
-}
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 12px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-.legend span { display: flex; align-items: center; gap: 6px; }
-.legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-.channel-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.channel-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  text-align: center;
-}
-.channel-name { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-.channel-value { font-size: 1.25rem; font-weight: 700; }
-.channel-pct { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
-@media (max-width: 900px) {
-  .grid-4 { grid-template-columns: repeat(2, 1fr); }
-  .grid-3 { grid-template-columns: 1fr; }
-  .channel-grid { grid-template-columns: repeat(2, 1fr); }
-}
+:root{--ivy:#1E3030;--ngahere:#375555;--sage:#B5CFBC;--ivory:#EFEFE8;--ivy-light:#263c3c;--ivy-border:#2d4a4a;--text-primary:#EFEFE8;--text-secondary:#B5CFBC;--text-muted:#7a9a8a;--positive:#8fd4a4;--negative:#e8917a;--chart-created:#B5CFBC;--chart-closed:#EFEFE8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Space Grotesk',-apple-system,sans-serif;background:var(--ivy);color:var(--text-primary);min-height:100vh;padding:2.5rem;font-weight:300}
+.container{max-width:1400px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3rem;padding-bottom:1.5rem;border-bottom:1px solid var(--ivy-border)}
+.brand{font-size:1.4rem;font-weight:400;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:.5rem}
+.header h1{font-size:2rem;font-weight:300;letter-spacing:-.01em;line-height:1.2}
+.header-right{text-align:right}
+.date-range{font-size:1.1rem;font-weight:400;color:var(--sage)}
+.last-updated{font-size:.75rem;color:var(--text-muted);margin-top:.25rem}
+.section-label{font-size:.7rem;font-weight:400;text-transform:uppercase;letter-spacing:.15em;color:var(--text-muted);margin-bottom:1rem;margin-top:2.5rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--ivy-border);border:1px solid var(--ivy-border);margin-bottom:2rem}
+.kpi-card{background:var(--ivy);padding:1.5rem}
+.kpi-card.highlight{background:var(--ngahere)}
+.kpi-label{font-size:.65rem;font-weight:400;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-bottom:.75rem}
+.kpi-card.highlight .kpi-label{color:var(--sage)}
+.kpi-value{font-size:2.2rem;font-weight:300;line-height:1;margin-bottom:.35rem}
+.kpi-change{font-size:.7rem;font-weight:400;letter-spacing:.03em}
+.kpi-change.up{color:var(--positive)}.kpi-change.down{color:var(--negative)}
+.kpi-sub{font-size:.7rem;color:var(--text-muted);margin-top:.25rem}
+.summary-bar{background:var(--ngahere);border:1px solid var(--ivy-border);padding:1.25rem 1.75rem;margin-bottom:2.5rem;font-size:.82rem;font-weight:300;line-height:1.7;color:var(--sage)}
+.workload-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--ivy-border);border:1px solid var(--ivy-border)}
+.workload-card{background:var(--ivy);padding:1.25rem}
+.workload-label{font-size:.6rem;font-weight:400;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:.6rem}
+.workload-value{font-size:1.8rem;font-weight:300;line-height:1;margin-bottom:.25rem}
+.workload-change{font-size:.65rem;font-weight:400}
+.chart-box{border:1px solid var(--ivy-border);padding:1.75rem;margin-top:2rem}
+.chart-title{font-size:.65rem;font-weight:400;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-bottom:1.25rem}
+.chart-wrapper{position:relative;height:280px}
+.channel-layout{display:grid;grid-template-columns:1fr 300px;gap:1px;background:var(--ivy-border);border:1px solid var(--ivy-border);margin-top:2rem}
+.channel-cards-wrap{background:var(--ivy)}
+.channel-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--ivy-border);height:100%}
+.channel-card{background:var(--ivy);padding:1.1rem 1.25rem;display:flex;align-items:center;gap:.9rem}
+.channel-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ch-name{font-size:.75rem;font-weight:400;color:var(--text-primary)}
+.ch-value{font-size:1.3rem;font-weight:300;line-height:1.2}
+.ch-pct{font-size:.65rem;color:var(--text-muted)}
+.doughnut-wrap{background:var(--ivy);padding:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.doughnut-title{font-size:.6rem;font-weight:400;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-bottom:1rem;text-align:center}
+.doughnut-canvas{position:relative;width:220px;height:220px}
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--ivy-border);display:flex;justify-content:space-between;font-size:.65rem;color:var(--text-muted);letter-spacing:.05em}
+@media(max-width:1000px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.workload-grid{grid-template-columns:repeat(3,1fr)}.channel-layout{grid-template-columns:1fr}.channel-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){body{padding:1.25rem}.header{flex-direction:column;gap:1rem}.header-right{text-align:left}.kpi-grid{grid-template-columns:1fr 1fr}.workload-grid{grid-template-columns:repeat(2,1fr)}.channel-cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="container">
-
-<h1>Mynd Mushrooms — Support Dashboard</h1>
-<p class="subtitle">Week of May 18 – May 24, 2026 &nbsp;|&nbsp; Last updated: May 24, 2026 at 06:50 PM UTC</p>
-
-<div class="status-card">
-  <div class="status-header">&#x1F7E2; Support Status: <span class="status-label green">Healthy</span></div>
-  <div class="grid-4">
-    <div><div class="metric-label">Avg CSAT</div><div class="metric-value" style="color:var(--green)">5</div><div class="metric-sub">46 surveys sent, 15% response rate</div></div>
-    <div><div class="metric-label">First response</div><div class="metric-value">8h 42m</div><div class="metric-sub">Median<span style="color:var(--green);font-size:0.75rem;margin-left:6px">&#9660; 12%</span></div></div>
-    <div><div class="metric-label">Resolution time</div><div class="metric-value">12h 10m</div><div class="metric-sub">Median<span style="color:var(--green);font-size:0.75rem;margin-left:6px">&#9660; 15%</span></div></div>
-    <div><div class="metric-label">One-touch</div><div class="metric-value">54%</div><div class="metric-sub">Resolved in one reply</div></div>
-  </div>
-  <div class="highlights">
-    <span>&#11088; <span class="highlight-best">Top channel:</span> Email — 52 tickets (53%)</span>
-    <span>&#128202; <span style="color:var(--accent)">Busiest day:</span> May 20 — 22 tickets</span>
-  </div>
-  <div class="summary-text">
-    Strong clearance rate — 110 closed against 98 created, shrinking the backlog by 12. Top channels: Email at 53%, Facebook at 27%, Instagram Ad Comment at 10%. 54% one-touch resolution. CSAT is 5/5 (15% response rate from 46 surveys sent).
-  </div>
+<div class="header">
+<div class="header-left"><div class="brand">mynd</div><h1>Support Dashboard</h1></div>
+<div class="header-right"><div class="date-range">May 18 – May 24, 2026</div><div class="last-updated">Updated May 24, 2026</div></div>
 </div>
-
-<div class="section">
-  <div class="section-title">&#128202; Workload overview</div>
-  <div class="grid-3">
-    <div class="card"><div class="metric-label">Created</div><div class="metric-value">98<span style="color:var(--red);font-size:0.75rem;margin-left:6px">&#9660; 21%</span></div><div class="metric-sub">Total tickets opened</div></div>
-    <div class="card"><div class="metric-label">Closed</div><div class="metric-value">110<span style="color:var(--green);font-size:0.75rem;margin-left:6px">&#9650; 17%</span></div><div class="metric-sub">+12 net resolved</div></div>
-    <div class="card"><div class="metric-label">Replied</div><div class="metric-value">81</div><div class="metric-sub">Human-handled tickets</div></div>
-  </div>
-  <div class="grid-3">
-    <div class="card"><div class="metric-label">Messages sent</div><div class="metric-value">103</div><div class="metric-sub">Across all channels</div></div>
-    <div class="card"><div class="metric-label">Messages received</div><div class="metric-value">150</div><div class="metric-sub">Customer messages</div></div>
-    <div class="card"><div class="metric-label">Msgs / ticket</div><div class="metric-value">1.3</div><div class="metric-sub">Average per replied ticket</div></div>
-  </div>
+<div class="section-label">Customer Experience</div>
+<div class="kpi-grid">
+<div class="kpi-card highlight"><div class="kpi-label">Average CSAT</div><div class="kpi-value">5</div><div class="kpi-change up">Perfect score</div><div class="kpi-sub">46 surveys, 15% response rate</div></div>
+<div class="kpi-card"><div class="kpi-label">First Response Time</div><div class="kpi-value">8h 42m</div><div class="kpi-change up">12% faster</div><div class="kpi-sub">Median</div></div>
+<div class="kpi-card"><div class="kpi-label">Resolution Time</div><div class="kpi-value">12h 10m</div><div class="kpi-change up">15% faster</div><div class="kpi-sub">Median</div></div>
+<div class="kpi-card"><div class="kpi-label">One-Touch</div><div class="kpi-value">54%</div><div class="kpi-change up">Resolved in one reply</div><div class="kpi-sub">Msgs/ticket: 1.3</div></div>
 </div>
-
-<div class="section">
-  <div class="section-title">&#128200; Daily ticket volume</div>
-  <div class="legend">
-    <span><span class="legend-dot" style="background:var(--accent)"></span>Created</span>
-  </div>
-  <div class="card">
-    <div class="chart-container"><canvas id="volumeChart"></canvas></div>
-  </div>
+<div class="summary-bar">Strong clearance rate — 110 closed against 99 created, shrinking the backlog by 11. Top channels: Email at 54%, Facebook at 26%, Instagram Ad Comment at 10%. 54% one-touch resolution. CSAT is 5/5 (15% response rate from 46 surveys sent).</div>
+<div class="section-label">Workload</div>
+<div class="workload-grid">
+<div class="workload-card"><div class="workload-label">Created</div><div class="workload-value">99</div><span class="workload-change" style="color:var(--positive)">↓21%</span></div>
+<div class="workload-card"><div class="workload-label">Closed</div><div class="workload-value">110</div><span class="workload-change" style="color:var(--positive)">↑17%</span></div>
+<div class="workload-card"><div class="workload-label">Net</div><div class="workload-value">+11</div><div class="workload-change" style="color:var(--text-muted)">Backlog shrinking</div></div>
+<div class="workload-card"><div class="workload-label">Replied</div><div class="workload-value">81</div><div class="workload-change" style="color:var(--text-muted)">Human-handled</div></div>
+<div class="workload-card"><div class="workload-label">Msgs Sent</div><div class="workload-value">103</div><div class="workload-change" style="color:var(--text-muted)">All channels</div></div>
+<div class="workload-card"><div class="workload-label">Msgs Received</div><div class="workload-value">151</div><div class="workload-change" style="color:var(--text-muted)">Customer messages</div></div>
 </div>
-
-<div class="section">
-  <div class="section-title">&#128236; Tickets by channel</div>
-  <div class="channel-grid">
-    <div class="channel-card"><div class="channel-name">Email</div><div class="channel-value" style="color:#22c55e">52</div><div class="channel-pct">53%<span style="color:var(--red);font-size:0.75rem;margin-left:6px">&#9660; 31%</span></div></div>
-    <div class="channel-card"><div class="channel-name">Facebook</div><div class="channel-value" style="color:#38bdf8">26</div><div class="channel-pct">27%<span style="color:var(--red);font-size:0.75rem;margin-left:6px">&#9660; 24%</span></div></div>
-    <div class="channel-card"><div class="channel-name">Instagram Ad Comment</div><div class="channel-value" style="color:#eab308">10</div><div class="channel-pct">10%<span style="color:var(--green);font-size:0.75rem;margin-left:6px">&#9650; 11%</span></div></div>
-    <div class="channel-card"><div class="channel-name">Instagram Direct Message</div><div class="channel-value" style="color:#f472b6">6</div><div class="channel-pct">6%<span style="color:var(--green);font-size:0.75rem;margin-left:6px">&#9650; 50%</span></div></div>
-    <div class="channel-card"><div class="channel-name">Facebook Messenger</div><div class="channel-value" style="color:#0ea5e9">2</div><div class="channel-pct">2%<span style="color:var(--green);font-size:0.75rem;margin-left:6px">&#9650; 100%</span></div></div>
-    <div class="channel-card"><div class="channel-name">Instagram Comment</div><div class="channel-value" style="color:#a78bfa">1</div><div class="channel-pct">1%<span style="color:var(--green);font-size:0.75rem;margin-left:6px">&#9650; 100%</span></div></div>
-    <div class="channel-card"><div class="channel-name">Instagram Mention</div><div class="channel-value" style="color:#fb923c">1</div><div class="channel-pct">1%<span style="color:var(--green);font-size:0.75rem;margin-left:6px">&#9650; 100%</span></div></div>
-  </div>
-  <div class="card">
-    <div class="chart-container"><canvas id="channelChart"></canvas></div>
-  </div>
+<div class="chart-box"><div class="chart-title">Daily Ticket Volume – Created</div><div class="chart-wrapper"><canvas id="dailyChart"></canvas></div></div>
+<div class="section-label">Channels</div>
+<div class="channel-layout">
+<div class="channel-cards-wrap"><div class="channel-cards">
+<div class="channel-card"><div class="channel-dot" style="background:#B5CFBC"></div><div><div class="ch-name">Email</div><div class="ch-value">53</div><div class="ch-pct">54%</div></div></div>
+<div class="channel-card"><div class="channel-dot" style="background:#EFEFE8"></div><div><div class="ch-name">Facebook</div><div class="ch-value">26</div><div class="ch-pct">26%</div></div></div>
+<div class="channel-card"><div class="channel-dot" style="background:#7a9a8a"></div><div><div class="ch-name">Instagram Ad Comment</div><div class="ch-value">10</div><div class="ch-pct">10%</div></div></div>
+<div class="channel-card"><div class="channel-dot" style="background:#375555"></div><div><div class="ch-name">Instagram Direct Message</div><div class="ch-value">6</div><div class="ch-pct">6%</div></div></div>
+<div class="channel-card"><div class="channel-dot" style="background:#5a8070"></div><div><div class="ch-name">Facebook Messenger</div><div class="ch-value">2</div><div class="ch-pct">2%</div></div></div>
+<div class="channel-card"><div class="channel-dot" style="background:#8fd4a4"></div><div><div class="ch-name">Instagram Comment</div><div class="ch-value">1</div><div class="ch-pct">1%</div></div></div>
+<div class="channel-card"><div class="channel-dot" style="background:#a4c4ab"></div><div><div class="ch-name">Instagram Mention</div><div class="ch-value">1</div><div class="ch-pct">1%</div></div></div>
+<div class="channel-card" style="opacity:0"></div>
+</div></div>
+<div class="doughnut-wrap"><div class="doughnut-title">Distribution</div><div class="doughnut-canvas"><canvas id="doughnutChart"></canvas></div></div>
 </div>
-
+<div class="footer"><span>mynd – Support Team</span><span>Source: Gorgias</span><span>Pacific/Auckland</span></div>
 </div>
-
 <script>
-new Chart(document.getElementById('volumeChart'), {
-  type: 'bar',
-  data: {
-    labels: ["May 18", "May 19", "May 20", "May 21", "May 22", "May 23", "May 24", "May 25"],
-    datasets: [
-      {label:'Created',data:[13, 17, 22, 20, 8, 11, 7, 0],backgroundColor:'#38bdf8',borderRadius:4}
-    ]
-  },
-  options: {
-    responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
-    scales:{
-      x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:12}}},
-      y:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#94a3b8',font:{size:12}},beginAtZero:true}
-    }
-  }
-});
-
-new Chart(document.getElementById('channelChart'), {
-  type: 'doughnut',
-  data: {
-    labels:["Email", "Facebook", "Instagram Ad Comment", "Instagram Direct Message", "Facebook Messenger", "Instagram Comment", "Instagram Mention"],
-    datasets:[{
-      data:[52, 26, 10, 6, 2, 1, 1],
-      backgroundColor:["#22c55e", "#38bdf8", "#eab308", "#f472b6", "#0ea5e9", "#a78bfa", "#fb923c"],
-      borderWidth:2,
-      borderColor:'#1e293b'
-    }]
-  },
-  options: {
-    responsive:true, maintainAspectRatio:false, cutout:'55%',
-    plugins:{
-      legend:{display:false},
-      tooltip:{callbacks:{label:function(ctx){
-        var t=ctx.dataset.data.reduce(function(a,b){return a+b},0);
-        return ctx.label+': '+ctx.raw+' ('+Math.round(ctx.raw/t*100)+'%)';
-      }}}
-    }
-  }
-});
+Chart.defaults.color='#7a9a8a';Chart.defaults.borderColor='#2d4a4a';Chart.defaults.font.family='Space Grotesk,sans-serif';Chart.defaults.font.weight=300;
+new Chart(document.getElementById('dailyChart'),{type:'bar',data:{labels:["May 18", "May 19", "May 20", "May 21", "May 22", "May 23", "May 24", "May 25"],datasets:[{label:'Created',data:[13, 17, 22, 20, 8, 11, 8, 0],backgroundColor:'#B5CFBC',borderRadius:2,barPercentage:.55,categoryPercentage:.7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',align:'end',labels:{usePointStyle:true,pointStyle:'rect',padding:20,font:{size:11,weight:300}}},tooltip:{backgroundColor:'#1E3030',titleColor:'#EFEFE8',bodyColor:'#B5CFBC',borderColor:'#2d4a4a',borderWidth:1,cornerRadius:0,padding:12,titleFont:{weight:400},bodyFont:{weight:300}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{beginAtZero:true,grid:{color:'#263c3c'},ticks:{stepSize:5,font:{size:11}}}}}});
+new Chart(document.getElementById('doughnutChart'),{type:'doughnut',data:{labels:["Email", "Facebook", "Instagram Ad Comment", "Instagram Direct Message", "Facebook Messenger", "Instagram Comment", "Instagram Mention"],datasets:[{data:[53, 26, 10, 6, 2, 1, 1],backgroundColor:["#B5CFBC", "#EFEFE8", "#7a9a8a", "#375555", "#5a8070", "#8fd4a4", "#a4c4ab"],borderColor:'#1E3030',borderWidth:2,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#1E3030',titleColor:'#EFEFE8',bodyColor:'#B5CFBC',borderColor:'#2d4a4a',borderWidth:1,cornerRadius:0,padding:12,callbacks:{label:function(ctx){var t=ctx.dataset.data.reduce(function(a,b){return a+b},0);return ' '+ctx.label+': '+ctx.parsed+' ('+((ctx.parsed/t)*100).toFixed(1)+'%)';}}}}}}});
 </script>
 </body>
 </html>
